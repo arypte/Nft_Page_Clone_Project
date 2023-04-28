@@ -14,7 +14,6 @@ const Nfts = ({ page, mintedNft, col_num }) => {
   const [bool, setBool] = useState(false);
   const [totalNfts, setTotalNfts] = useState();
   const [filterOptions, setFilterOptions] = useState({});
-  const [nownum, setNownum] = useState(0);
   const js = jsondata[parseInt(col_num)];
   const JSON_URL = js.JSON_URL;
 
@@ -162,27 +161,37 @@ const Nfts = ({ page, mintedNft, col_num }) => {
   }, [check]);
 
   return (
-    <div className="max-w-screen-xl mx-auto pt-4">
-      <Filter foption={filterOptions} bool={bool} setCheck={setCheck} />
-      <div>{pageComp()}</div>
-      <ul className="mt-8 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8">
-        {nfts ? (
-          nfts.map((v, i) => {
-            return (
-              <NftCard
-                key={i}
-                tokenId={v.tokenId}
-                metadata={v.metadata}
-                mintedNft={mintedNft}
-              />
-            );
-          })
-        ) : (
-          <div>로딩중입니다...</div>
-        )}
-      </ul>
+    <div className="max-w-screen-xl mx-auto pt-4 flex">
+      <div
+        className="z-10"
+        style={{
+          position: '-webkit-sticky',
+          position: 'sticky',
+          top: '1rem',
+        }}
+      >
+        <Filter foption={filterOptions} bool={bool} setCheck={setCheck} />
+      </div>
+      <div className="flex-grow">
+        <div>{pageComp()}</div>
+        <ul className="mt-8 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8">
+          {nfts ? (
+            nfts.map((v, i) => {
+              return (
+                <NftCard
+                  key={i}
+                  tokenId={v.tokenId}
+                  metadata={v.metadata}
+                  mintedNft={mintedNft}
+                />
+              );
+            })
+          ) : (
+            <div>로딩중입니다...</div>
+          )}
+        </ul>
+      </div>
     </div>
   );
 };
-
 export default Nfts;
