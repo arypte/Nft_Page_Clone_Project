@@ -54,7 +54,7 @@ const Intro = ({ totalNft, mintedNft, myNft, col_num }) => {
 
         <div className="mt-2 flex items-center text-gray-300">
           by
-          <div className="text-black ml-2">{jsondata.CONTRACT_ADDRESS}</div>
+          <div className="text-white ml-2">{jsondata.CONTRACT_ADDRESS}</div>
         </div>
         <div className="mt-2 text-gray-300">{jsondata.Desc}</div>
         <div className="py-4 text-center flex">
