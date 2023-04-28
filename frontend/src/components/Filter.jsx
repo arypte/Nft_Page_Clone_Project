@@ -17,10 +17,15 @@ const Filter = ({ foption, check, bool }) => {
 
   useEffect(() => {
     setting();
+    console.log(foption, bool);
   }, [bool]);
 
   if (bool) {
     return (
+      <div>
+        <div>isLoading....</div>;
+      </div>
+      /*
       <div className="filter">
         {foption.map((option) => (
           <div key={option.trait_type}>
@@ -34,6 +39,7 @@ const Filter = ({ foption, check, bool }) => {
           </div>
         ))}
       </div>
+      */
     );
   } else {
     return <div>isLoading....</div>;
