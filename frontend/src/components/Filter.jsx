@@ -1,33 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-const Filter = ({ foption, check, bool }) => {
-  const [checkedOptions, setCheckedOptions] = useState({});
+const Filter = ({ foption, bool }) => {
+  const [selectedOptions, setSelectedOptions] = useState({});
 
-  let parsedFoption;
+  const handleCheckboxChange = (trait_type, value) => {
+    setSelectedOptions((prevSelectedOptions) => {
+      const newSelectedOptions = { ...prevSelectedOptions };
 
-  const setting = () => {
-    if (!bool) return;
-    try {
-      parsedFoption =
-        typeof foption === 'string' ? JSON.parse(foption) : foption;
-    } catch (error) {
-      console.error('Error parsing foption:', error);
-      parsedFoption = [];
-    }
+      if (!newSelectedOptions[trait_type]) {
+        newSelectedOptions[trait_type] = [];
+      }
+
+      if (newSelectedOptions[trait_type].includes(value)) {
+        newSelectedOptions[trait_type] = newSelectedOptions[trait_type].filter(
+          (optionValue) => optionValue !== value
+        );
+      } else {
+        newSelectedOptions[trait_type].push(value);
+      }
+
+      return newSelectedOptions;
+    });
   };
 
-  useEffect(() => {
-    setting();
-    console.log(foption, bool);
-  }, [bool]);
-
-  if (bool) {
-    return (
-      <div>isLoading....<div>LOADINGEND</div></div>;
-    );
-  } else {
-    return <div>isLoading....</div>;
+  if (!bool) {
+    return <div>Loading...</div>;
   }
+
+  return (
+    <div>
+      {Object.entries(foption).map(([trait_type, values]) => (
+        <div key={trait_type}>
+          <h3>{trait_type}</h3>
+          {values.map((value) => (
+            <div key={value}>
+              <input
+                type="checkbox"
+                value={value}
+                onChange={() => handleCheckboxChange(trait_type, value)}
+              />
+              <label>{value}</label>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Filter;
