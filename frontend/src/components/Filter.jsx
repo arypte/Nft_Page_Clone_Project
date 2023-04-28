@@ -27,7 +27,7 @@ const Filter = ({ foption, bool, setCheck }) => {
   if (!bool) return null;
 
   return (
-    <div>
+    <div className="border border-gray-300 rounded-lg p-4 mb-4">
       {Object.keys(foption).map((trait_type) => (
         <div key={trait_type}>
           <h3 onClick={() => toggleExpand(trait_type)}>{trait_type}</h3>

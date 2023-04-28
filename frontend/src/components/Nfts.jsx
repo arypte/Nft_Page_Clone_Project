@@ -174,7 +174,7 @@ const Nfts = ({ page, mintedNft, col_num }) => {
       </div>
       <div className="flex-grow">
         <div>{pageComp()}</div>
-        <ul className="mt-8 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8">
+        <ul className="ml-1 mt-8 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8">
           {nfts ? (
             nfts.map((v, i) => {
               return (
