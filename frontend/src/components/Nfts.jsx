@@ -43,7 +43,6 @@ const Nfts = ({ page, mintedNft, col_num }) => {
       // console.log(nftArray);
       // console.log(newFilterOptions);
       // console.log(filterOptions);
-
       // newFilterOPtions , filterOption 동기화 한번에 안됨 체크
     } catch (error) {
       console.log(error);
@@ -165,6 +164,9 @@ const Nfts = ({ page, mintedNft, col_num }) => {
 
   useEffect(() => {
     getNfts(1);
+    // console.log(mintedNft);
+    // console.log(filterOptions) ;
+    // 동기화 안됨
   }, [check]);
 
   return (
