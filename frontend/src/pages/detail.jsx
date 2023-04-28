@@ -12,7 +12,6 @@ const Detail = () => {
   const getNft = async () => {
     try {
       const response = await axios.get(`${js.JSON_URL}/${tokenId}.json`);
-
       setMetadata(response.data);
     } catch (error) {
       console.error(error);

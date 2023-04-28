@@ -1,47 +1,54 @@
 import React, { useState } from 'react';
 
-const Filter = ({ foption, bool }) => {
-  const [selectedOptions, setSelectedOptions] = useState({});
+const Filter = ({ foption, bool, setCheck }) => {
+  const [expanded, setExpanded] = useState({});
 
-  const handleCheckboxChange = (trait_type, value) => {
-    setSelectedOptions((prevSelectedOptions) => {
-      const newSelectedOptions = { ...prevSelectedOptions };
+  const toggleExpand = (key) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
 
-      if (!newSelectedOptions[trait_type]) {
-        newSelectedOptions[trait_type] = [];
-      }
+  const handleFilterChange = (trait_type, value, checked) => {
+    setCheck((prev) => {
+      const prevValues = prev[trait_type] || [];
+      const newValues = checked
+        ? [...prevValues, value]
+        : prevValues.filter((v) => v !== value);
 
-      if (newSelectedOptions[trait_type].includes(value)) {
-        newSelectedOptions[trait_type] = newSelectedOptions[trait_type].filter(
-          (optionValue) => optionValue !== value
-        );
-      } else {
-        newSelectedOptions[trait_type].push(value);
-      }
-
-      return newSelectedOptions;
+      return {
+        ...prev,
+        [trait_type]: newValues,
+      };
     });
   };
 
-  if (!bool) {
-    return <div>Loading...</div>;
-  }
+  if (!bool) return null;
 
   return (
     <div>
-      {Object.entries(foption).map(([trait_type, values]) => (
+      {Object.keys(foption).map((trait_type) => (
         <div key={trait_type}>
-          <h3>{trait_type}</h3>
-          {values.map((value) => (
-            <div key={value}>
-              <input
-                type="checkbox"
-                value={value}
-                onChange={() => handleCheckboxChange(trait_type, value)}
-              />
-              <label>{value}</label>
+          <h3 onClick={() => toggleExpand(trait_type)}>{trait_type}</h3>
+          {expanded[trait_type] && (
+            <div>
+              {foption[trait_type].map((value) => (
+                <div key={value}>
+                  <input
+                    type="checkbox"
+                    id={value}
+                    name={value}
+                    value={value}
+                    onChange={(e) =>
+                      handleFilterChange(trait_type, value, e.target.checked)
+                    }
+                  />
+                  <label htmlFor={value}>{value}</label>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       ))}
     </div>

@@ -8,12 +8,13 @@ import Filter from './Filter';
 // 그담에 필터사용. 필터 적용
 
 const Nfts = ({ page, mintedNft, col_num }) => {
+  const [check, setCheck] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [check, setCheck] = useState();
   const [nfts, setNfts] = useState();
   const [bool, setBool] = useState(false);
   const [totalNfts, setTotalNfts] = useState();
   const [filterOptions, setFilterOptions] = useState({});
+  const [nownum, setNownum] = useState(0);
   const js = jsondata[parseInt(col_num)];
   const JSON_URL = js.JSON_URL;
 
@@ -29,6 +30,8 @@ const Nfts = ({ page, mintedNft, col_num }) => {
         const tokenId = i + 1;
 
         let response = await axios.get(`${JSON_URL}/${tokenId}.json`);
+        console.log(`${JSON_URL}/${tokenId}.json`);
+        console.log(response);
 
         nftArray.push({ tokenId, metadata: response.data });
       }
@@ -43,6 +46,28 @@ const Nfts = ({ page, mintedNft, col_num }) => {
     }
   };
 
+  const isNftMatchingFilter = (nft, filters) => {
+    // 필터가 비어있는 경우 모든 NFT가 일치하는 것으로 간주
+    if (!filters || Object.keys(filters).length === 0) {
+      return true;
+    }
+
+    return Object.keys(filters).every((trait_type) => {
+      const filterValues = filters[trait_type];
+      if (!filterValues || filterValues.length === 0) {
+        return true;
+      }
+
+      const matchingAttribute = nft.metadata.attributes.find(
+        (attribute) => attribute.trait_type === trait_type
+      );
+
+      if (!matchingAttribute) return false;
+
+      return filterValues.includes(matchingAttribute.value);
+    });
+  };
+
   const getNfts = async (p) => {
     try {
       if (!mintedNft) return;
@@ -51,9 +76,28 @@ const Nfts = ({ page, mintedNft, col_num }) => {
 
       setNfts();
 
-      for (let i = 0; i < 10; i++) {
-        nftArray.push(totalNfts[i]);
+      let start_count = 0;
+      let count = 0;
+
+      for (let i = 0; i < mintedNft; i++) {
+        const currentNft = totalNfts[i];
+
+        // 필터 조건을 만족하는지 확인
+
+        console.log(check);
+
+        let boolcheck = isNftMatchingFilter(currentNft, check);
+
+        if (boolcheck) {
+          start_count++;
+          if (start_count > (p - 1) * 10 && start_count <= p * 10) {
+            count++;
+            nftArray.push(currentNft);
+          }
+          if (count >= 10) break;
+        }
       }
+
       setNfts(nftArray);
       //console.log(nftArray[0].metadata.image);
     } catch (error) {
@@ -119,11 +163,11 @@ const Nfts = ({ page, mintedNft, col_num }) => {
 
   useEffect(() => {
     getNfts(1);
-  }, [filterOptions]);
+  }, [check]);
 
   return (
     <div className="max-w-screen-xl mx-auto pt-4">
-      <Filter foption={filterOptions} check={check} bool={bool} />
+      <Filter foption={filterOptions} bool={bool} setCheck={setCheck} />
       <div>{pageComp()}</div>
       <ul className="mt-8 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 justify-items-center gap-8">
         {nfts ? (
