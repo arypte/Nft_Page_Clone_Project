@@ -29,7 +29,7 @@ const Intro = ({ totalNft, mintedNft, myNft, col_num }) => {
   const imgSrc = jsondata.IMAGE_URL;
 
   return (
-    <div className="bg-gradient-to-b from-transparent to-red-400 pt-10">
+    <div className="bg-gradient-to-b from-transparent to-gray-700 pt-10">
       <div className="mx-auto max-w-screen-xl ">
         <div className="relative">
           <img
