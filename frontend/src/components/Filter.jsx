@@ -6,6 +6,7 @@ const Filter = ({ foption, check, bool }) => {
   let parsedFoption;
 
   const setting = () => {
+    if (!bool) return;
     try {
       parsedFoption =
         typeof foption === 'string' ? JSON.parse(foption) : foption;
@@ -22,24 +23,7 @@ const Filter = ({ foption, check, bool }) => {
 
   if (bool) {
     return (
-      <div>
-        <div>isLoading....</div>;
-      </div>
-      /*
-      <div className="filter">
-        {foption.map((option) => (
-          <div key={option.trait_type}>
-            <h3>{option.trait_type}</h3>
-            {option.values.map((value) => (
-              <label key={value}>
-                <input type="checkbox" />
-                {value}
-              </label>
-            ))}
-          </div>
-        ))}
-      </div>
-      */
+      <div>isLoading....<div>LOADINGEND</div></div>;
     );
   } else {
     return <div>isLoading....</div>;
