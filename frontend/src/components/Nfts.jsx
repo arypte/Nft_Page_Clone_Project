@@ -30,8 +30,6 @@ const Nfts = ({ page, mintedNft, col_num }) => {
         const tokenId = i + 1;
 
         let response = await axios.get(`${JSON_URL}/${tokenId}.json`);
-        console.log(`${JSON_URL}/${tokenId}.json`);
-        console.log(response);
 
         nftArray.push({ tokenId, metadata: response.data });
       }
@@ -83,8 +81,6 @@ const Nfts = ({ page, mintedNft, col_num }) => {
         const currentNft = totalNfts[i];
 
         // 필터 조건을 만족하는지 확인
-
-        console.log(check);
 
         let boolcheck = isNftMatchingFilter(currentNft, check);
 
